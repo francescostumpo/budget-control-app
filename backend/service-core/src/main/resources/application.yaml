@@ -1,0 +1,8 @@
+application:
+  title: service-core
+  version: 0.0.1-SNAPSHOT
+spring:
+  application:
+    name: service-core
+  jackson:
+    default-property-inclusion: non-empty
