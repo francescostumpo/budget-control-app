@@ -16,8 +16,8 @@ public class ClientController implements ClientsApi {
     private final ClientService clientService;
 
     @Override
-    public ResponseEntity<Client> createNewClientByOrganizationName(String name, Client client) {
-        return clientService.createNewClientByOrganizationName(name, client);
+    public ResponseEntity<Client> createClientByOrganizationName(String name, Client client) {
+        return clientService.createClientByOrganizationName(name, client);
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.primesloth.budgetcontrolapp.services;
 
-import com.primesloth.budgetcontrolapp.api.model.Client;
-import com.primesloth.budgetcontrolapp.mappers.ClientMapper;
-import com.primesloth.budgetcontrolapp.repositories.ClientRepository;
+import com.primesloth.budgetcontrolapp.api.model.Resource;
+import com.primesloth.budgetcontrolapp.mappers.OrganizationMapper;
+import com.primesloth.budgetcontrolapp.mappers.ResourceMapper;
 import com.primesloth.budgetcontrolapp.repositories.OrganizationRepository;
+import com.primesloth.budgetcontrolapp.repositories.ResourceRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,15 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
-public class ClientService {
+public class ResourceService {
 
     private final OrganizationRepository organizationRepository;
-    private final ClientRepository clientRepository;
-    private final ClientMapper clientMapper;
-
-
-    public ResponseEntity<Client> createClientByOrganizationName(String name, Client client) {
+    private final ResourceMapper resourceMapper;
+    private final ResourceRepository resourceRepository;
+    @Transactional
+    public ResponseEntity<Resource> createResourceByOrganizationName(String name, Resource resource) {
         if(Objects.isNull(name)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing organization name parameter.");
         }
@@ -34,14 +33,13 @@ public class ClientService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid organization.");
         }
 
-        var clientEntity = clientMapper.toClientEntity(client);
-        clientEntity.setOrganizationEntity(orgOptional.get());
-        var ce = clientRepository.save(clientEntity);
-        return ResponseEntity.ok(clientMapper.toClientDto(ce));
-
+        var resourceEntity = resourceMapper.toResourceEntity(resource);
+        resourceEntity.setOrganizationEntity(orgOptional.get());
+        var r = resourceRepository.save(resourceEntity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resourceMapper.toResourceDto(r));
     }
 
-    public ResponseEntity<List<Client>> getAllClientsByOrganizationName(String name) {
+    public ResponseEntity<List<Resource>> getAllResourcesByOrganizationName(String name) {
         if(Objects.isNull(name)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing organization name parameter.");
         }
@@ -50,7 +48,8 @@ public class ClientService {
         if(orgOptional.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid organization.");
         }
-        var clientEntityList = clientRepository.findAllByOrganizationName(name);
-        return ResponseEntity.ok(clientMapper.toClientListDto(clientEntityList));
+
+        var resources = resourceRepository.findAllByOrganizationName(name);
+        return ResponseEntity.ok(resourceMapper.toResourceListDto(resources));
     }
 }

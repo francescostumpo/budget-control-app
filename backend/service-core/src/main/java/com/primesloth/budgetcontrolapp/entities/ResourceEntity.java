@@ -1,6 +1,7 @@
 package com.primesloth.budgetcontrolapp.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -8,13 +9,13 @@ import java.util.List;
 @Table(name = "resources", schema = "budget_schema")
 public class ResourceEntity extends BaseEntity{
 
-    Long id;
-    String username;
-    Level level;
-    Double lcr;
-    Double chargeability;
-    OrganizationEntity organizationEntity;
-    List<ResourceProjectEntity> resourceProjectEntityList;
+    private Long id;
+    private String username;
+    private Level level;
+    private Double lcr;
+    private Double chargeability;
+    private OrganizationEntity organizationEntity;
+    private List<ResourceProjectEntity> resourceProjectEntityList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,6 +82,7 @@ public class ResourceEntity extends BaseEntity{
         this.resourceProjectEntityList = resourceProjectEntityList;
     }
 
+    @Getter
     public enum Level {
         ANALYST("Analyst"),
         CONSULTANT("Consultant"),
@@ -94,8 +96,5 @@ public class ResourceEntity extends BaseEntity{
             this.value = value;
         }
 
-        public String getValue() {
-            return value;
-        }
     }
 }

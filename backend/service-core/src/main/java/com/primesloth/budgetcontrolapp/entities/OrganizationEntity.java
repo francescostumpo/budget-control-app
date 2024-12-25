@@ -16,7 +16,7 @@ public class OrganizationEntity extends BaseEntity{
         LocalDateTime endPaymentDate; //TODO To-be implemented in a future release
         Boolean endActiveDate;
         List<UserEntity> userEntities;
-        List<ResourceEntity> resourceEntities;
+        List<ResourceEntity> resourceEntityList;
 
 
         @Id
@@ -75,11 +75,11 @@ public class OrganizationEntity extends BaseEntity{
         }
 
         @OneToMany(mappedBy = "organizationEntity")
-        public List<ResourceEntity> getResourceEntities() {
-                return resourceEntities;
+        public List<ResourceEntity> getResourceEntityList() {
+                return resourceEntityList;
         }
 
-        public void setResourceEntities(List<ResourceEntity> resourceEntities) {
-                this.resourceEntities = resourceEntities;
+        public void setResourceEntityList(List<ResourceEntity> resourceEntityList) {
+                this.resourceEntityList = resourceEntityList;
         }
 }

@@ -9,7 +9,6 @@ public class ClientEntity extends BaseEntity{
     Long id;
     String name;
     OrganizationEntity organizationEntity;
-
     ProjectEntity projectEntity;
 
     @Id
