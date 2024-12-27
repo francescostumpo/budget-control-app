@@ -10,6 +10,7 @@ public class ResourceProjectEntity extends BaseEntity{
     ResourceEntity resourceEntity;
     ProjectEntity projectEntity;
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {

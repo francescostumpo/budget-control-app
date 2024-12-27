@@ -36,6 +36,8 @@ public class ClientService {
 
         var clientEntity = clientMapper.toClientEntity(client);
         clientEntity.setOrganizationEntity(orgOptional.get());
+        clientEntity.setTotalSaving(0.0);
+        clientEntity.setTotalSold(0.0);
         var ce = clientRepository.save(clientEntity);
         return ResponseEntity.ok(clientMapper.toClientDto(ce));
 

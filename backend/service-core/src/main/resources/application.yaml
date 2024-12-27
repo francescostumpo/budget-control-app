@@ -6,3 +6,6 @@ spring:
     name: service-core
   jackson:
     default-property-inclusion: non-empty
+  threads:
+    virtual:
+      enabled: true

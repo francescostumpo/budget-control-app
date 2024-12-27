@@ -33,6 +33,8 @@ public class OrganizationService {
 
     public ResponseEntity<Organization> createOrganization(Organization organization) {
         var organizationEntity = organizationMapper.toOrganizationEntity(organization);
+        organizationEntity.setTotalSaving(0.0);
+        organizationEntity.setTotalSold(0.0);
         var org = organizationRepository.save(organizationEntity);
         return ResponseEntity.ok(organizationMapper.toOrganizationDto(org));
     }
@@ -43,5 +45,14 @@ public class OrganizationService {
         }
         var users = userRepository.findAllByOrganizationName(name);
         return ResponseEntity.ok(userMapper.toUsersListDto(users));
+    }
+
+    public ResponseEntity<Organization> getOrganizationById(String organizationName) {
+        var orgOptional = organizationRepository.findByName(organizationName);
+        if(orgOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid organization.");
+        }
+        return ResponseEntity.ok(organizationMapper.toOrganizationDto(orgOptional.get()));
+
     }
 }

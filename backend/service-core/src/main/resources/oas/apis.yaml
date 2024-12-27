@@ -380,6 +380,243 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Project'
+  /organizations/{name}/clients/{clientId}/projects/{projectId}:
+    delete:
+      summary: Delete a project related to a client
+      operationId: deleteProjectByOrganizationNameAndClientId
+      tags:
+        - Projects
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Project deleted successfully
+
+  /organizations/{name}/clients/{clientId}/projects/{projectId}/resources:
+    get:
+      summary: Get all resources associated to a client and a project
+      operationId: getAllResourceByClientIdAndProjectId
+      tags:
+        - Resources
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+    post:
+      summary: Associate a resource to a project
+      operationId: associateResourceToProjectByOrganizationNameAndClientId
+      tags:
+        - Resources
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Resource created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resource:
+                    $ref: '#/components/schemas/Resource'
+                  project:
+                    $ref: '#/components/schemas/Project'
+  /organizations/{name}/clients/{clientId}/projects/{projectId}/estimations:
+    get:
+      summary: Get all estimations associated to a project
+      operationId: getEstimationByProjectId
+      tags:
+        - Estimations
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Estimation related to a project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estimation'
+    post:
+      summary: Create an estimation associated to a project
+      operationId: createEstimationAssociatedToAProject
+      tags:
+        - Estimations
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                projectId:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Estimation created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  estimation:
+                    $ref: '#/components/schemas/Estimation'
+    delete:
+      summary: Delete an estimation associated to a project
+      operationId: deleteEstimationAssociatedToAProject
+      tags:
+        - Estimations
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                projectId:
+                  type: integer
+                  example: 1
+      responses:
+        '204':
+          description: Estimation deleted successfully
+    put:
+      summary: Update an estimation associated to a project
+      operationId: updateEstimationAssociatedToAProject
+      tags:
+        - Estimations
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Estimation'
+      responses:
+        '200':
+          description: Estimation update successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  estimation:
+                    $ref: '#/components/schemas/Estimation'
   /organizations/{name}/clients/{id}:
     get:
       summary: Get a client by ID
@@ -456,6 +693,84 @@ paths:
           description: Client deleted successfully
 components:
   schemas:
+    Estimation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the estimation."
+        version:
+          type: integer
+          format: int64
+          description: "Version number of the estimation."
+        createdAt:
+          type: string
+          format: date
+          description: "The creation date of the estimation."
+        updatedAt:
+          type: string
+          format: date
+          description: "The last update date of the estimation."
+        project:
+          $ref: '#/components/schemas/Project'
+        resourcesProjections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceProjection'
+        expectedCost:
+          type: number
+          format: double
+          description: "The expected cost for the project."
+        expectedRevenues:
+          type: number
+          format: double
+          description: "The expected revenues for the project."
+        saving:
+          type: number
+          format: double
+          description: "The projected savings for the project."
+
+    ResourceProjection:
+      type: object
+      properties:
+        username:
+          type: string
+          description: "The username of the resource."
+        lcr:
+          type: number
+          format: double
+          description: "The labor cost rate for the resource."
+        chargeability:
+          type: number
+          format: double
+          description: "The default chargeability for the resource."
+        projections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Projection'
+
+    Projection:
+      type: object
+      properties:
+        endFortnight:
+          type: string
+          format: date
+          description: "The last day of the fortnight."
+        availableHours:
+          type: number
+          format: double
+          description: "The number of available working hours during the fortnight."
+        chargedHours:
+          type: number
+          format: double
+          description: "The number of charged hours for the fortnight."
+        cost:
+          type: number
+          format: double
+          description: "The cost associated with the fortnight."
+        isActual:
+          type: boolean
+          description: "Indicates whether the projection is actual or estimated."
     Project:
       type: object
       properties:
@@ -465,7 +780,7 @@ components:
         name:
           type: string
           description: The name of the project
-        revenue:
+        revenues:
           type: number
           format: double
           description: The revenue expected for the project
@@ -492,6 +807,12 @@ components:
           type: string
           format: email
           description: The email address of the organization
+        totalSold:
+          type: number
+          format: double
+        totalSaving:
+          type: number
+          format: double
     User:
       type: object
       properties:
@@ -514,6 +835,12 @@ components:
           type: integer
         name:
           type: string
+        totalSold:
+          type: number
+          format: double
+        totalSaving:
+          type: number
+          format: double
     Resource:
       type: object
       properties:

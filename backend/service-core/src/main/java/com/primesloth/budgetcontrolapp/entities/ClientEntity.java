@@ -1,15 +1,24 @@
 package com.primesloth.budgetcontrolapp.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+
+import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "clients", schema = "budget_schema")
 public class ClientEntity extends BaseEntity{
 
-    Long id;
-    String name;
-    OrganizationEntity organizationEntity;
-    ProjectEntity projectEntity;
+    private Long id;
+    private String name;
+
+    private Double totalSold;
+
+    private Double totalSaving;
+
+    private OrganizationEntity organizationEntity;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +39,24 @@ public class ClientEntity extends BaseEntity{
         this.name = name;
     }
 
+    @Column(name = "total_sold")
+    public Double getTotalSold() {
+        return totalSold;
+    }
+
+    public void setTotalSold(Double totalSold) {
+        this.totalSold = totalSold;
+    }
+
+    @Column(name = "total_saving")
+    public Double getTotalSaving() {
+        return totalSaving;
+    }
+
+    public void setTotalSaving(Double totalSaving) {
+        this.totalSaving = totalSaving;
+    }
+
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     public OrganizationEntity getOrganizationEntity() {
@@ -40,12 +67,4 @@ public class ClientEntity extends BaseEntity{
         this.organizationEntity = organizationEntity;
     }
 
-    @OneToOne(mappedBy = "clientEntity")
-    public ProjectEntity getProjectEntity() {
-        return projectEntity;
-    }
-
-    public void setProjectEntity(ProjectEntity projectEntity) {
-        this.projectEntity = projectEntity;
-    }
-}
+   }

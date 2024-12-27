@@ -24,4 +24,9 @@ public class ProjectController implements ProjectsApi {
     public ResponseEntity<List<Project>> getAllProjectsByOrganizationNameAndClientId(String name, Integer id) {
         return projectService.getAllProjectsByOrganizationNameAndClientId(name, id);
     }
+
+    @Override
+    public ResponseEntity<Void> deleteProjectByOrganizationNameAndClientId(String name, Integer clientId, Integer projectId) {
+        return projectService.deleteProjectByOrganizationNameAndClientId(name, clientId, projectId);
+    }
 }

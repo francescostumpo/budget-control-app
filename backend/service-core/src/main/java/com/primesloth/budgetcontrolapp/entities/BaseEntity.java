@@ -18,6 +18,7 @@ public abstract class BaseEntity {
     String updateBy;
 
 
+
     @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -54,6 +55,9 @@ public abstract class BaseEntity {
         this.updateBy = updateBy;
     }
 
+
+
+
     @PrePersist
     void onCreate(){
         this.setCreatedAt(ZonedDateTime.now(ZoneId.of("Europe/Rome")).toLocalDateTime());
@@ -65,4 +69,6 @@ public abstract class BaseEntity {
         this.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Europe/Rome")).toLocalDateTime());
         //TODO update_by
     }
+
+
 }

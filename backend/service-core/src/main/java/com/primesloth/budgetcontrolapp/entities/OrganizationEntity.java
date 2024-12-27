@@ -2,8 +2,8 @@ package com.primesloth.budgetcontrolapp.entities;
 
 import jakarta.persistence.*;
 
+
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Entity
@@ -15,8 +15,10 @@ public class OrganizationEntity extends BaseEntity{
         String email;
         LocalDateTime endPaymentDate; //TODO To-be implemented in a future release
         Boolean endActiveDate;
-        List<UserEntity> userEntities;
-        List<ResourceEntity> resourceEntityList;
+
+        Double totalSold;
+
+        Double totalSaving;
 
 
         @Id
@@ -65,21 +67,21 @@ public class OrganizationEntity extends BaseEntity{
                 this.endActiveDate = endActiveDate;
         }
 
-        @OneToMany(mappedBy = "organizationEntity")
-        public List<UserEntity> getUserEntities() {
-                return userEntities;
+        @Column(name = "total_sold")
+        public Double getTotalSold() {
+                return totalSold;
         }
 
-        public void setUserEntities(List<UserEntity> userEntities) {
-                this.userEntities = userEntities;
+        public void setTotalSold(Double totalSold) {
+                this.totalSold = totalSold;
         }
 
-        @OneToMany(mappedBy = "organizationEntity")
-        public List<ResourceEntity> getResourceEntityList() {
-                return resourceEntityList;
+        @Column(name = "total_saving")
+        public Double getTotalSaving() {
+                return totalSaving;
         }
 
-        public void setResourceEntityList(List<ResourceEntity> resourceEntityList) {
-                this.resourceEntityList = resourceEntityList;
+        public void setTotalSaving(Double totalSaving) {
+                this.totalSaving = totalSaving;
         }
 }

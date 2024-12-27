@@ -17,4 +17,8 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
 
     @Query("select ce from ClientEntity ce where ce.organizationEntity.name = :name and ce.id = :id")
     Optional<ClientEntity> findByOrganizationNameAndId(@Param("name") String name, @Param("id") Long id);
+
+    @Query("select ce from ClientEntity ce join ProjectEntity pe on pe.clientEntity.id = ce.id " +
+            "where pe.id = :id")
+    Optional<ClientEntity> findByProjectId(@Param("id") Long id);
 }

@@ -15,7 +15,6 @@ public class ResourceEntity extends BaseEntity{
     private Double lcr;
     private Double chargeability;
     private OrganizationEntity organizationEntity;
-    private List<ResourceProjectEntity> resourceProjectEntityList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,15 +70,6 @@ public class ResourceEntity extends BaseEntity{
 
     public void setOrganizationEntity(OrganizationEntity organizationEntity) {
         this.organizationEntity = organizationEntity;
-    }
-
-    @OneToMany(mappedBy = "resourceEntity")
-    public List<ResourceProjectEntity> getResourceProjectEntityList() {
-        return resourceProjectEntityList;
-    }
-
-    public void setResourceProjectEntityList(List<ResourceProjectEntity> resourceProjectEntityList) {
-        this.resourceProjectEntityList = resourceProjectEntityList;
     }
 
     @Getter
